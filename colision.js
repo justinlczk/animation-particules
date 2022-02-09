@@ -138,4 +138,3 @@ class Ball {
       balls[0].checkCollision(balls[1]);
     }
   }
-  
