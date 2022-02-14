@@ -31,7 +31,7 @@ class Particule {
   // création de la particule
   createParticule() {
     noStroke();
-    strokeWeight(1);
+    strokeWeight(.5);
     fill(`rgb(${this.red}, ${this.green}, ${this.blue})`);
     circle(this.x, this.y, this.r);
   }
@@ -148,7 +148,7 @@ class ParticuleToCenter {
   // création de la particule
   createParticule() {
     noStroke();
-    strokeWeight(1);
+    strokeWeight(.5);
     fill(`rgb(${this.red}, ${this.green}, ${this.blue})`);
     circle(this.x, this.y, this.r);
   }
@@ -363,7 +363,6 @@ function setup() {
   function positionSubtitles(startAngle, circleX, circleY, rayonCircle, total) {
     countPositionSubtitles++;
     angleMode(DEGREES);
-    console.log(total)
 
     const angle = 360 / total;
     const count = startAngle + countPositionSubtitles * angle;
@@ -378,7 +377,25 @@ function setup() {
 
   data.forEach((element, index) => {
     if (element.type === "secondary") {
+      let subtitlesTable = []
       let positionCircle = positionCercles(-90);
+
+      for (let subtitle of element.subtitles) {
+        let imageSubtitle = createImg('./img/plus.svg')
+        let positionSub = positionSubtitles(90, positionCircle[0], positionCircle[1], 110, element.subtitles.length)
+        imageSubtitle.position(positionSub[0] - 15/2, positionSub[1] - 15/2)
+        imageSubtitle.size(15, 15)
+
+        let textSubtitle = createP(subtitle)
+        textSubtitle.position(positionSub[0], positionSub[1])
+        textSubtitle.class('text-subtitle')
+        textSubtitle.id('text-subtitle')
+        subtitlesTable.push(textSubtitle)
+      }
+
+      countPositionSubtitles = 0
+
+
       let circleSecondary = new ContentCircle(
         element.color.r,
         element.color.g,
@@ -387,23 +404,45 @@ function setup() {
         positionCircle[1],
         "secondary",
         element.image,
-        element.subtitles
+        subtitlesTable
       );
       let image = createImg(`./img/${element.image}`)
       image.position(positionCircle[0] - 350/2, positionCircle[1] - 350/2)
       image.size(350, 350)
 
-      for (let subtitle of element.subtitles) {
-        let imageSubtitle = createImg('./img/plus.svg')
-        let positionSub = positionSubtitles(90, positionCircle[0], positionCircle[1], 110, element.subtitles.length)
-        imageSubtitle.position(positionSub[0] - 15/2, positionSub[1] - 15/2)
-        imageSubtitle.size(15, 15)
-      }
+      image.mouseOver(()=>{
+        for(let paragraphe of circleSecondary.points) {
+          paragraphe.class('text-subtitle-active')
+        }
+      })
 
-      countPositionSubtitles = 0
+      image.mouseOut(()=>{
+        for(let paragraphe of circleSecondary.points) {
+          paragraphe.class('text-subtitle')
+        }
+      })
 
       circles.push(circleSecondary);
     } else {
+
+      let subtitlesTable = []
+
+      for (let subtitle of element.subtitles) {
+        let imageSubtitle = createImg('./img/plus.svg')
+        let positionSub = positionSubtitles(90, width / 2, height / 2, 110, element.subtitles.length)
+        imageSubtitle.position(positionSub[0] - 15/2, positionSub[1] - 15/2)
+        imageSubtitle.size(15, 15)
+
+        let textSubtitle = createP(subtitle)
+        textSubtitle.position(positionSub[0], positionSub[1])
+        textSubtitle.class('text-subtitle')
+        textSubtitle.id('text-subtitle')
+        subtitlesTable.push(textSubtitle)
+        
+      }
+
+      countPositionSubtitles = 0
+      
       let circlePrimary = new ContentCircle(
         element.color.r,
         element.color.g,
@@ -412,23 +451,26 @@ function setup() {
         height / 2,
         "primary",
         element.image,
-        element.subtitles
+        subtitlesTable
       );
-      circles.push(circlePrimary);
+      
       let image = createImg(`./img/${element.image}`)
       image.position(width / 2 - 350/2, height / 2 - 350/2)
       image.size(350, 350)
 
+      image.mouseOver(()=>{
+        for(let paragraphe of circlePrimary.points) {
+          paragraphe.class('text-subtitle-active')
+        }
+      })
 
-      for (let subtitle of element.subtitles) {
-        let imageSubtitle = createImg('./img/plus.svg')
-        let positionSub = positionSubtitles(90, width / 2, height / 2, 110, element.subtitles.length)
-        imageSubtitle.position(positionSub[0] - 15/2, positionSub[1] - 15/2)
-        imageSubtitle.size(15, 15)
-      }
+      image.mouseOut(()=>{
+        for(let paragraphe of circlePrimary.points) {
+          paragraphe.class('text-subtitle')
+        }
+      })
 
-      countPositionSubtitles = 0
-
+      circles.push(circlePrimary);
 
     }
   });
