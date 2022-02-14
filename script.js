@@ -317,7 +317,7 @@ class ParticuleToCenter {
 }
 
 class ContentCircle {
-  constructor(red, green, blue, x, y, type) {
+  constructor(red, green, blue, x, y, type, image) {
     this.position = new p5.Vector(x, y);
     this.red = red;
     this.green = green;
@@ -327,6 +327,7 @@ class ContentCircle {
     this.particules = [];
     this.r = 100;
     this.type = type;
+    this.image = image;
   }
 
   createCircle() {
@@ -378,8 +379,12 @@ function setup() {
         element.color.b,
         positionCircle[0],
         positionCircle[1],
-        "secondary"
+        "secondary",
+        element.image
       );
+      let image = createImg(`./img/${element.image}`)
+      image.position(positionCircle[0] - 350/2, positionCircle[1] - 350/2)
+      image.size(350, 350)
 
       console.log(circleSecondary);
 
@@ -391,7 +396,8 @@ function setup() {
         element.color.b,
         width / 2,
         height / 2,
-        "primary"
+        "primary",
+        element.image
       );
       circles.push(circlePrimary);
     }
@@ -402,8 +408,8 @@ function setup() {
       for (let i = 0; i < 40; i++) {
         el.particules.push(
           new ParticuleToCenter(
-            5,
-            10,
+            4,
+            7,
             25,
             circles[index],
             circles[index].red,
@@ -416,8 +422,8 @@ function setup() {
       for (let i = 0; i < 60; i++) {
         el.particules.push(
           new Particule(
-            5,
-            10,
+            4,
+            7,
             25,
             circles[index],
             circles[index].red,
@@ -430,8 +436,8 @@ function setup() {
       for (let i = 0; i < 40; i++) {
         el.particules.push(
           new Particule(
-            5,
-            10,
+            4,
+            7,
             25,
             circles[index],
             circles[index].red,
