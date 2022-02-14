@@ -16,9 +16,7 @@ class Particule {
 
     this.x = circleContainer.x + radius * cos(theta);
     this.y = circleContainer.y + radius * sin(theta);
-    console.log("x :", circleContainer.x, "y :", circleContainer.y);
-    // this.x = circleContainer.x;
-    // this.y = circleContainer.y;
+
     this.position = new p5.Vector(this.x, this.y);
     this.r = random(rayonMin, rayonMax);
     this.xSpeed = random(0.5, -0.5);
@@ -167,9 +165,6 @@ class ParticuleToCenter {
     let greenDiff = Math.abs(this.initGreen - 198);
     let blueDiff = Math.abs(this.initBlue - 63);
 
-    console.log(redDiff, greenDiff, blueDiff);
-    console.log(this.redScale, this.greenScale, this.blueScale)
-
     let V_dist = p5.Vector.sub(this.P1, this.P0).mult(scale);
     let PX = p5.Vector.add(this.P0, V_dist);
 
@@ -230,14 +225,6 @@ class ParticuleToCenter {
                 }
               }
         }
-
-        
-
-    
-
-    // this.red =  Math.round(redDiff * (currentTIme * 100 / this.endTime))
-    // this.green =  Math.round(greenDiff * (currentTIme * 100 / this.endTime))
-    // this.blue =  Math.round(blueDiff * (currentTIme * 100 / this.endTime))
 
     if (
       this.x == this.xCenter &&
@@ -317,7 +304,7 @@ class ParticuleToCenter {
 }
 
 class ContentCircle {
-  constructor(red, green, blue, x, y, type, image) {
+  constructor(red, green, blue, x, y, type, image, points) {
     this.position = new p5.Vector(x, y);
     this.red = red;
     this.green = green;
@@ -328,6 +315,7 @@ class ContentCircle {
     this.r = 100;
     this.type = type;
     this.image = image;
+    this.points = points;
   }
 
   createCircle() {
@@ -355,6 +343,8 @@ function setup() {
   let centerX = width / 2;
   let centerY = height / 2;
 
+  let countPositionSubtitles = 0;
+
   function positionCercles(startAngle) {
     countPosition++;
     angleMode(DEGREES);
@@ -370,6 +360,22 @@ function setup() {
     return valuePosition;
   }
 
+  function positionSubtitles(startAngle, circleX, circleY, rayonCircle, total) {
+    countPositionSubtitles++;
+    angleMode(DEGREES);
+    console.log(total)
+
+    const angle = 360 / total;
+    const count = startAngle + countPositionSubtitles * angle;
+
+    // calcul des points x et y
+    let newX = circleX + rayonCircle * cos(count);
+    let newY = circleY + rayonCircle * sin(count);
+
+    let valuePosition = [Math.round(newX), Math.round(newY)];
+    return valuePosition;
+  }
+
   data.forEach((element, index) => {
     if (element.type === "secondary") {
       let positionCircle = positionCercles(-90);
@@ -380,13 +386,21 @@ function setup() {
         positionCircle[0],
         positionCircle[1],
         "secondary",
-        element.image
+        element.image,
+        element.subtitles
       );
       let image = createImg(`./img/${element.image}`)
       image.position(positionCircle[0] - 350/2, positionCircle[1] - 350/2)
       image.size(350, 350)
 
-      console.log(circleSecondary);
+      for (let subtitle of element.subtitles) {
+        let imageSubtitle = createImg('./img/plus.svg')
+        let positionSub = positionSubtitles(90, positionCircle[0], positionCircle[1], 110, element.subtitles.length)
+        imageSubtitle.position(positionSub[0] - 15/2, positionSub[1] - 15/2)
+        imageSubtitle.size(15, 15)
+      }
+
+      countPositionSubtitles = 0
 
       circles.push(circleSecondary);
     } else {
@@ -397,9 +411,25 @@ function setup() {
         width / 2,
         height / 2,
         "primary",
-        element.image
+        element.image,
+        element.subtitles
       );
       circles.push(circlePrimary);
+      let image = createImg(`./img/${element.image}`)
+      image.position(width / 2 - 350/2, height / 2 - 350/2)
+      image.size(350, 350)
+
+
+      for (let subtitle of element.subtitles) {
+        let imageSubtitle = createImg('./img/plus.svg')
+        let positionSub = positionSubtitles(90, width / 2, height / 2, 110, element.subtitles.length)
+        imageSubtitle.position(positionSub[0] - 15/2, positionSub[1] - 15/2)
+        imageSubtitle.size(15, 15)
+      }
+
+      countPositionSubtitles = 0
+
+
     }
   });
 
