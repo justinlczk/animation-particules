@@ -1,4 +1,4 @@
-let data = [
+let data =[
     {
         "type" : "main",
         "title" : "Algorithmes personnalisés et contextualisés",
@@ -17,14 +17,14 @@ let data = [
         "type" : "secondary",
         "title" : "Data patient en vie réelle",
         "subtitles" : ["Unité médicale", "Effets indésirables", "Age / Sexe", "Allergie", "Maladie", "Analyse Biologique"],
-        "color" : { "r" : 237, "g" : 137, "b" : 20 },
+        "color" : { "r" : 207, "g" : 107, "b" : 20 },
         "proportion" : 1000
     },
     {
         "type" : "secondary",
         "title" : "Encyclopédie médicamenteuse",
         "subtitles" : ["Base médicaments", "Bases internationales", "Informations médicales"],
-        "color" : { "r" : 227, "g" : 127, "b" : 10 },
+        "color" : { "r" : 197, "g" : 97, "b" : 30 },
         "proportion" : 300
     }
 ]

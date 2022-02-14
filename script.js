@@ -5,7 +5,7 @@ class Particule {
   // la distance minimale entre deux particules pour créer une ligne
   // la vitesse minimale et maximale de la particule
 
-  constructor(color, rayonMin, rayonMax, distance, circleContainer) {
+  constructor(rayonMin, rayonMax, distance, circleContainer, red, green, blue) {
     //this.x = random(rayonMax / 2, width - rayonMax / 2);
     //this.y = random(rayonMax / 2, height - rayonMax / 2);
 
@@ -23,16 +23,18 @@ class Particule {
     this.r = random(rayonMin, rayonMax);
     this.xSpeed = random(0.5, -0.5);
     this.ySpeed = random(0.5, -0.5);
-    this.color = color;
     this.distance = distance;
     this.circleContainer = circleContainer;
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
   }
 
   // création de la particule
   createParticule() {
     noStroke();
     strokeWeight(1);
-    fill(this.color);
+    fill(`rgb(${this.red}, ${this.green}, ${this.blue})`);
     circle(this.x, this.y, this.r);
   }
 
@@ -64,7 +66,7 @@ class Particule {
     particules.forEach((element) => {
       let dis = dist(this.x, this.y, element.x, element.y);
       if (dis < this.distance) {
-        stroke(this.color);
+        stroke(`rgb(${this.red}, ${this.green}, ${this.blue})`);
         line(this.x, this.y, element.x, element.y);
       }
     });
@@ -78,7 +80,7 @@ class ParticuleToCenter {
   // la distance minimale entre deux particules pour créer une ligne
   // la vitesse minimale et maximale de la particule
 
-  constructor(color, rayonMin, rayonMax, distance, circleContainer) {
+  constructor(rayonMin, rayonMax, distance, circleContainer, red, green, blue) {
     //this.x = random(rayonMax / 2, width - rayonMax / 2);
     //this.y = random(rayonMax / 2, height - rayonMax / 2);
     this.circleContainer = circleContainer;
@@ -103,7 +105,7 @@ class ParticuleToCenter {
     let distanceMiddleX;
     let distanceMiddleY;
 
-    this.timing = 6000;
+    this.timing = random(4, 8) * 1000;
 
     this.startTime = millis();
     this.endTime = this.startTime + this.timing; // 3 seconds
@@ -127,7 +129,20 @@ class ParticuleToCenter {
     this.xSpeed = random(0.1, 0.5);
     this.ySpeed = random(0.1, 0.5);
 
-    this.color = color;
+    this.way = true; 
+
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
+
+    this.initRed = red;
+    this.initGreen = green;
+    this.initBlue = blue;
+
+    this.redScale = 0;
+    this.greenScale = 0;
+    this.blueScale = 0;
+
     this.distance = distance;
     this.circleContainer = circleContainer;
   }
@@ -136,7 +151,7 @@ class ParticuleToCenter {
   createParticule() {
     noStroke();
     strokeWeight(1);
-    fill(this.color);
+    fill(`rgb(${this.red}, ${this.green}, ${this.blue})`);
     circle(this.x, this.y, this.r);
   }
 
@@ -148,6 +163,13 @@ class ParticuleToCenter {
       (currentTIme - this.startTime) / (this.endTime - this.startTime)
     );
 
+    let redDiff = Math.abs(this.initRed - 140);
+    let greenDiff = Math.abs(this.initGreen - 198);
+    let blueDiff = Math.abs(this.initBlue - 63);
+
+    console.log(redDiff, greenDiff, blueDiff);
+    console.log(this.redScale, this.greenScale, this.blueScale)
+
     let V_dist = p5.Vector.sub(this.P1, this.P0).mult(scale);
     let PX = p5.Vector.add(this.P0, V_dist);
 
@@ -157,11 +179,75 @@ class ParticuleToCenter {
     let currentX;
     let currentY;
 
+        if(this.way == true) {
+            if (this.redScale < redDiff) {
+                this.redScale++;
+                if (this.initRed < 140) {
+                  this.red += 1;
+                } else {
+                  this.red -= 1;
+                }
+              } 
+              if (this.greenScale < greenDiff) {
+                this.greenScale++;
+                if (this.initGreen < 198) {
+                  this.green += 1;
+                } else {
+                  this.green -= 1;
+                }
+              }
+              if (this.blueScale < blueDiff) {
+                this.blueScale++;
+                if (this.initBlue < 63) {
+                  this.blue += 1;
+                } else {
+                  this.blue -= 1;
+                }
+              }
+        } else if(this.way == false) {
+            if (this.redScale < redDiff) {
+                this.redScale++;
+                if (this.initRed < 140) {
+                  this.red -= 1;
+                } else {
+                  this.red += 1;
+                }
+              } 
+              if (this.greenScale < greenDiff) {
+                this.greenScale++;
+                if (this.initGreen < 198) {
+                  this.green -= 1;
+                } else {
+                  this.green += 1;
+                }
+              }
+              if (this.blueScale < blueDiff) {
+                this.blueScale++;
+                if (this.initBlue < 63) {
+                  this.blue -= 1;
+                } else {
+                  this.blue += 1;
+                }
+              }
+        }
+
+        
+
+    
+
+    // this.red =  Math.round(redDiff * (currentTIme * 100 / this.endTime))
+    // this.green =  Math.round(greenDiff * (currentTIme * 100 / this.endTime))
+    // this.blue =  Math.round(blueDiff * (currentTIme * 100 / this.endTime))
+
     if (
       this.x == this.xCenter &&
       this.y == this.yCenter &&
       this.firstTime == true
     ) {
+        this.redScale = 0
+        this.greenScale = 0
+        this.blueScale = 0
+        this.way = false 
       this.R = this.circleContainer.r;
       this.u = random();
       this.radius = this.R * Math.sqrt(this.u);
@@ -191,6 +277,11 @@ class ParticuleToCenter {
       this.y == this.initialY &&
       this.firstTime == false
     ) {
+        this.redScale = 0
+        this.greenScale = 0
+        this.blueScale = 0
+        this.way = true 
+
       this.R = this.circleContainer.r;
       this.u = random();
       this.radius = this.R * Math.sqrt(this.u);
@@ -218,7 +309,7 @@ class ParticuleToCenter {
     particules.forEach((element) => {
       let dis = dist(this.x, this.y, element.x, element.y);
       if (dis < this.distance) {
-        stroke(this.color);
+        stroke(`rgb(${this.red}, ${this.green}, ${this.blue})`);
         line(this.x, this.y, element.x, element.y);
       }
     });
@@ -241,8 +332,8 @@ class ContentCircle {
   createCircle() {
     noFill();
     stroke(this.red, this.green, this.blue);
-    strokeWeight(1);
-    circle(this.x, this.y, 200);
+    strokeWeight(0);
+    circle(this.x, this.y, this.r * 2);
   }
 }
 
@@ -311,35 +402,41 @@ function setup() {
       for (let i = 0; i < 40; i++) {
         el.particules.push(
           new ParticuleToCenter(
-            `rgb(${circles[index].red}, ${circles[index].green}, ${circles[index].blue})`,
             5,
             10,
             25,
-            circles[index]
+            circles[index],
+            circles[index].red,
+            circles[index].green,
+            circles[index].blue
           )
         );
       }
 
-      for (let i = 0; i < 40; i++) {
+      for (let i = 0; i < 60; i++) {
         el.particules.push(
           new Particule(
-            `rgb(${circles[index].red}, ${circles[index].green}, ${circles[index].blue})`,
             5,
             10,
             25,
-            circles[index]
+            circles[index],
+            circles[index].red,
+            circles[index].green,
+            circles[index].blue
           )
         );
       }
     } else {
-      for (let i = 0; i < 80; i++) {
+      for (let i = 0; i < 40; i++) {
         el.particules.push(
           new Particule(
-            `rgb(${circles[index].red}, ${circles[index].green}, ${circles[index].blue})`,
             5,
             10,
             25,
-            circles[index]
+            circles[index],
+            circles[index].red,
+            circles[index].green,
+            circles[index].blue
           )
         );
       }
@@ -355,22 +452,20 @@ function draw() {
   // on clear pour pas que les particules laissent des "traces"
   clear();
 
+  let allParticulesJoin = [];
+  circles.forEach((el, index) => {
+    el.particules.forEach((part) => {
+      allParticulesJoin.push(part);
+    });
+  });
+
   circles.forEach((el, index) => {
     el.createCircle();
     el.particules.forEach((particule, i) => {
       particule.createParticule();
       particule.moveParticule(el);
-      particule.joinParticules(el.particules.slice(i));
+      particule.joinParticules(allParticulesJoin.slice(i));
     });
-  });
-
-  // on dessine les particules et on appelle leur fonctions de déplacement et de jointures
-  particules.forEach((element) => {
-    for (let i = 0; i < element.length; i++) {
-      element[i].createParticule();
-      element[i].moveParticule();
-      element[i].joinParticules(element.slice(i));
-    }
   });
 }
 
