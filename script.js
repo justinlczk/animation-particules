@@ -335,7 +335,7 @@ let allParticules = [];
 let circles = [];
 
 function setup() {
-  let canvas = createCanvas(windowWidth, Math.round(windowHeight * 0.8));
+  let canvas = createCanvas(windowWidth, windowHeight);
   canvas.parent("canvas-container");
 
   let countPosition = 0;
@@ -385,6 +385,7 @@ function setup() {
         let positionSub = positionSubtitles(90, positionCircle[0], positionCircle[1], 110, element.subtitles.length)
         imageSubtitle.position(positionSub[0] - 15/2, positionSub[1] - 15/2)
         imageSubtitle.size(15, 15)
+        imageSubtitle.class('img-subtitle')
 
         let textSubtitle = createP(subtitle)
         textSubtitle.position(positionSub[0], positionSub[1])
@@ -409,18 +410,28 @@ function setup() {
       let image = createImg(`./img/${element.image}`)
       image.position(positionCircle[0] - 350/2, positionCircle[1] - 350/2)
       image.size(350, 350)
+      
 
-      image.mouseOver(()=>{
+      let circleButtonCalque = createDiv()
+      circleButtonCalque.position(positionCircle[0] - 350/2, positionCircle[1] - 350/2)
+      circleButtonCalque.size(350, 350)
+      circleButtonCalque.class('circle-hoverable')
+
+      circleButtonCalque.mouseOver(()=>{
         for(let paragraphe of circleSecondary.points) {
           paragraphe.class('text-subtitle-active')
         }
       })
 
-      image.mouseOut(()=>{
+      circleButtonCalque.mouseOut(()=>{
         for(let paragraphe of circleSecondary.points) {
           paragraphe.class('text-subtitle')
         }
       })
+
+      let title = createP(element.title)
+      title.position(positionCircle[0], positionCircle[1])
+      title.class('title-circle')
 
       circles.push(circleSecondary);
     } else {
@@ -432,6 +443,7 @@ function setup() {
         let positionSub = positionSubtitles(90, width / 2, height / 2, 110, element.subtitles.length)
         imageSubtitle.position(positionSub[0] - 15/2, positionSub[1] - 15/2)
         imageSubtitle.size(15, 15)
+        imageSubtitle.class('img-subtitle')
 
         let textSubtitle = createP(subtitle)
         textSubtitle.position(positionSub[0], positionSub[1])
@@ -440,6 +452,9 @@ function setup() {
         subtitlesTable.push(textSubtitle)
         
       }
+
+      
+
 
       countPositionSubtitles = 0
       
@@ -458,19 +473,28 @@ function setup() {
       image.position(width / 2 - 350/2, height / 2 - 350/2)
       image.size(350, 350)
 
-      image.mouseOver(()=>{
+      let circleButtonCalque = createDiv()
+      circleButtonCalque.position(width / 2 - 350/2, height / 2 - 350/2)
+      circleButtonCalque.size(350, 350)
+      circleButtonCalque.class('circle-hoverable')
+
+      circleButtonCalque.mouseOver(()=>{
         for(let paragraphe of circlePrimary.points) {
           paragraphe.class('text-subtitle-active')
         }
       })
 
-      image.mouseOut(()=>{
+      circleButtonCalque.mouseOut(()=>{
         for(let paragraphe of circlePrimary.points) {
           paragraphe.class('text-subtitle')
         }
       })
 
       circles.push(circlePrimary);
+
+      let title = createP(element.title)
+      title.position(width / 2, height / 2)
+      title.class('title-circle')
 
     }
   });
@@ -549,5 +573,6 @@ function draw() {
 
 // on resize le canvas sur le resize de la fenêtre (à corriger)
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight * 0.8);
+  resizeCanvas(windowWidth, windowHeight);
+  redraw()
 }
