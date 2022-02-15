@@ -324,6 +324,14 @@ class ContentCircle {
     strokeWeight(0);
     circle(this.x, this.y, this.r * 2);
   }
+
+  reposition(){
+    if(this.type == "primary") {
+      this.x = width/2
+      this.y = height/2
+      this.position = new p5.Vector(width/2, height/2);
+    }
+  }
 }
 
 // création du tableau pour afficher les particules
@@ -575,4 +583,7 @@ function draw() {
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   redraw()
+  circles.forEach((el)=>{
+    el.reposition()
+  })
 }
