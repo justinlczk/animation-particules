@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Animation particules</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
         body {
             margin: 0;
+            font-family: 'Roboto'
         }
         #canvas-container {
             width: 100vw;
@@ -17,7 +19,7 @@
             z-index: 8;
         }
         #text-subtitle {
-            transition: all 1s;
+            transition: all .1s;
             font-size: 10px;
             z-index: 8;
         }
@@ -28,11 +30,24 @@
         .text-subtitle-active {
             transform: translateX(-50%) translateY(0);
             opacity: 1;
+            background: #fff;
+            padding: 5px;
         }
 
         .title-circle {
             transform: translate(-50%, -50%);
+            background: radial-gradient(circle, #fff 0%, #fff 40%, #ffffff00 100%);
+            /*transform: translate(-50%, 900%);*/
+            text-transform: uppercase;
             margin: 0;
+            font-size: 14px;
+            text-align: center;
+            font-weight: 500;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .circle-hoverable {

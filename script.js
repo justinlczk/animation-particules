@@ -1,3 +1,6 @@
+let rayonGlobal = 100
+let multiplicateurGlobal = 3.5
+
 class Particule {
   // paramétrage de la particule
   // la position x/y de base de la particule
@@ -312,7 +315,7 @@ class ContentCircle {
     this.x = x;
     this.y = y;
     this.particules = [];
-    this.r = 100;
+    this.r = rayonGlobal;
     this.type = type;
     this.image = image;
     this.points = points;
@@ -342,12 +345,11 @@ let allParticules = [];
 // création du tableau de stockage pour les cercles
 let circles = [];
 
-function setup() {
-  let canvas = createCanvas(windowWidth, windowHeight);
-  canvas.parent("canvas-container");
-
+function drawingThings() {
+  circles = [];
+  
   let countPosition = 0;
-  let rayon = height / 3;
+  let rayon = rayonGlobal * 3;
   let centerX = width / 2;
   let centerY = height / 2;
 
@@ -383,25 +385,38 @@ function setup() {
     return valuePosition;
   }
 
+  // taille des points + des sous titres
+  let sizeSubtitles = 15
+
+  // Fonction de création de sous titres
+  function createSubtitles(subtitles, positionCircleX, positionCircleY) {
+    let subtitlesTable = []
+    for (let subtitle of subtitles) {
+      let imageSubtitle = createImg('./img/plus.svg')
+      let positionSub = positionSubtitles(90, positionCircleX , positionCircleY, rayonGlobal + rayonGlobal * 0.1, subtitles.length)
+      imageSubtitle.position(positionSub[0] - sizeSubtitles/2, positionSub[1] - sizeSubtitles/2)
+      imageSubtitle.size(sizeSubtitles, sizeSubtitles)
+      imageSubtitle.class('img-subtitle')
+
+      let textSubtitle = createP(subtitle)
+      textSubtitle.position(positionSub[0], positionSub[1])
+      textSubtitle.class('text-subtitle')
+      textSubtitle.id('text-subtitle')
+      subtitlesTable.push(textSubtitle)
+    }
+    return subtitlesTable
+  }
+
+
+
   data.forEach((element, index) => {
     if (element.type === "secondary") {
-      let subtitlesTable = []
+      
       let positionCircle = positionCercles(-90);
 
-      for (let subtitle of element.subtitles) {
-        let imageSubtitle = createImg('./img/plus.svg')
-        let positionSub = positionSubtitles(90, positionCircle[0], positionCircle[1], 110, element.subtitles.length)
-        imageSubtitle.position(positionSub[0] - 15/2, positionSub[1] - 15/2)
-        imageSubtitle.size(15, 15)
-        imageSubtitle.class('img-subtitle')
-
-        let textSubtitle = createP(subtitle)
-        textSubtitle.position(positionSub[0], positionSub[1])
-        textSubtitle.class('text-subtitle')
-        textSubtitle.id('text-subtitle')
-        subtitlesTable.push(textSubtitle)
-      }
-
+      // appel à la fonction de création des sous titres
+      let subtitlesTable = createSubtitles(element.subtitles, positionCircle[0], positionCircle[1])
+      
       countPositionSubtitles = 0
 
 
@@ -416,13 +431,13 @@ function setup() {
         subtitlesTable
       );
       let image = createImg(`./img/${element.image}`)
-      image.position(positionCircle[0] - 350/2, positionCircle[1] - 350/2)
-      image.size(350, 350)
+      image.position(positionCircle[0] - rayonGlobal * multiplicateurGlobal / 2, positionCircle[1] - rayonGlobal * multiplicateurGlobal / 2)
+      image.size(rayonGlobal * multiplicateurGlobal, rayonGlobal * multiplicateurGlobal)
       
 
       let circleButtonCalque = createDiv()
-      circleButtonCalque.position(positionCircle[0] - 350/2, positionCircle[1] - 350/2)
-      circleButtonCalque.size(350, 350)
+      circleButtonCalque.position(positionCircle[0] - rayonGlobal * multiplicateurGlobal/2, positionCircle[1] - rayonGlobal * multiplicateurGlobal/2)
+      circleButtonCalque.size(rayonGlobal * multiplicateurGlobal, rayonGlobal * multiplicateurGlobal)
       circleButtonCalque.class('circle-hoverable')
 
       circleButtonCalque.mouseOver(()=>{
@@ -440,31 +455,14 @@ function setup() {
       let title = createP(element.title)
       title.position(positionCircle[0], positionCircle[1])
       title.class('title-circle')
-
+      title.style('color', `rgb(${element.color.r - element.color.r * 0.4}, ${element.color.g - element.color.g * 0.4}, ${element.color.b - element.color.b * 0.4})`);
+      title.style('width', `${rayonGlobal} px`)
       circles.push(circleSecondary);
     } else {
 
-      let subtitlesTable = []
 
-      for (let subtitle of element.subtitles) {
-        let imageSubtitle = createImg('./img/plus.svg')
-        let positionSub = positionSubtitles(90, width / 2, height / 2, 110, element.subtitles.length)
-        imageSubtitle.position(positionSub[0] - 15/2, positionSub[1] - 15/2)
-        imageSubtitle.size(15, 15)
-        imageSubtitle.class('img-subtitle')
-
-        let textSubtitle = createP(subtitle)
-        textSubtitle.position(positionSub[0], positionSub[1])
-        textSubtitle.class('text-subtitle')
-        textSubtitle.id('text-subtitle')
-        subtitlesTable.push(textSubtitle)
-        
-      }
-
-      
-
-
-      countPositionSubtitles = 0
+      // appel à la fonction de création des sous titres
+      let subtitlesTable = createSubtitles(element.subtitles, width/2, height/2)
       
       let circlePrimary = new ContentCircle(
         element.color.r,
@@ -478,12 +476,12 @@ function setup() {
       );
       
       let image = createImg(`./img/${element.image}`)
-      image.position(width / 2 - 350/2, height / 2 - 350/2)
-      image.size(350, 350)
+      image.position(width / 2 - rayonGlobal * multiplicateurGlobal/2, height / 2 - rayonGlobal * multiplicateurGlobal/2)
+      image.size(rayonGlobal * multiplicateurGlobal, rayonGlobal * multiplicateurGlobal)
 
       let circleButtonCalque = createDiv()
-      circleButtonCalque.position(width / 2 - 350/2, height / 2 - 350/2)
-      circleButtonCalque.size(350, 350)
+      circleButtonCalque.position(width / 2 - rayonGlobal * multiplicateurGlobal/2, height / 2 - rayonGlobal * multiplicateurGlobal/2)
+      circleButtonCalque.size(rayonGlobal * multiplicateurGlobal, rayonGlobal * multiplicateurGlobal)
       circleButtonCalque.class('circle-hoverable')
 
       circleButtonCalque.mouseOver(()=>{
@@ -503,6 +501,8 @@ function setup() {
       let title = createP(element.title)
       title.position(width / 2, height / 2)
       title.class('title-circle')
+      title.style('color', `rgb(${element.color.r - element.color.r * 0.4}, ${element.color.g - element.color.g * 0.4}, ${element.color.b - element.color.b * 0.4})`);
+      title.style('width', `${rayonGlobal} px`)
 
     }
   });
@@ -552,6 +552,12 @@ function setup() {
       }
     }
   });
+}
+
+function setup() {
+  let canvas = createCanvas(windowWidth, windowHeight);
+  canvas.parent("canvas-container");
+  drawingThings()
 
   // Création des zones des différents objets secondaires
 }
@@ -582,8 +588,4 @@ function draw() {
 // on resize le canvas sur le resize de la fenêtre (à corriger)
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  redraw()
-  circles.forEach((el)=>{
-    el.reposition()
-  })
 }

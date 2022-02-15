@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 256.15 256.15"><defs><style>.cls-1{fill:url(#radial-gradient);}.cls-2{opacity:0.5;}.cls-3{fill:#f9b000;}.cls-4{fill:none;}.cls-5{mask:url(#mask);}.cls-6{filter:url(#luminosity-noclip);}#forme_1 {
     transform-origin: 50% 50%;
-    animation: turn 50s linear infinite;
+    animation: turn 100s linear infinite;
 }
 #forme_2 {
     transform-origin: 50% 50%;
