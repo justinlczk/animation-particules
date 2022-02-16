@@ -1,4 +1,5 @@
-let rayonGlobal = 100
+let rayonGlobal = window.innerHeight/10;
+if(window.innerWidth < window.innerHeight) rayonGlobal = window.innerWidth/10
 let multiplicateurGlobal = 3.5
 
 class Particule {
@@ -456,7 +457,9 @@ function drawingThings() {
       title.position(positionCircle[0], positionCircle[1])
       title.class('title-circle')
       title.style('color', `rgb(${element.color.r - element.color.r * 0.4}, ${element.color.g - element.color.g * 0.4}, ${element.color.b - element.color.b * 0.4})`);
-      title.style('width', `${rayonGlobal} px`)
+      // title.style(`width: ${rayonGlobal} px`)
+      // title.style(`height: ${rayonGlobal} px`)
+
       circles.push(circleSecondary);
     } else {
 
@@ -502,7 +505,8 @@ function drawingThings() {
       title.position(width / 2, height / 2)
       title.class('title-circle')
       title.style('color', `rgb(${element.color.r - element.color.r * 0.4}, ${element.color.g - element.color.g * 0.4}, ${element.color.b - element.color.b * 0.4})`);
-      title.style('width', `${rayonGlobal} px`)
+      // title.style('width', `${rayonGlobal} px`)
+      // title.style('height', `${rayonGlobal} px`)
 
     }
   });

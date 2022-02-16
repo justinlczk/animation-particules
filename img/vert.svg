@@ -14,7 +14,7 @@
     }
     #forme_3{
         transform-origin: 50% 50%;
-        animation: turn 50s linear infinite;
+        animation: turn 15s linear infinite;
     }
     @keyframes turn {
         0% {
